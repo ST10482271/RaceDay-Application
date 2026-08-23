@@ -23,4 +23,4 @@ jobs:
          run: nuget restore "RaceDay Application.slnx"
 
       -   name: Build the Solution
-          run: msbuild RaceDay "Application.slnx"
+          run: msbuild "RaceDay Application.slnx"
