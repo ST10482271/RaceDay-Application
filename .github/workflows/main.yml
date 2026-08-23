@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: setup-msbuild
         uses: microsoft/setup-msbuild@v3
@@ -20,7 +20,7 @@ jobs:
         uses: NuGet/setup-nuget@v4.0
         
       -  name: Restore NuGet packages
-         run: nuget restore RaceDay Application.slnx
+         run: nuget restore "RaceDay Application.slnx"
 
       -   name: Build the Solution
-          run: msbuild RaceDay Application.slnx
+          run: msbuild RaceDay "Application.slnx"
