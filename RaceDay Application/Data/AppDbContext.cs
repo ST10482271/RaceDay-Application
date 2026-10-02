@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RaceDayApplication.Models;
 
-namespace RaceDay.Data
+namespace RaceDayApplication.Data
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser>
     //this class inherits from IdentityDbContext to include identity management features
