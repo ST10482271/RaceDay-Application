@@ -43,7 +43,7 @@ namespace RaceDayApplication.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 PhoneNumber = model.PhoneNumber,
-                Age = (int)model.Age,//the Age property of the ApplicationUser object is set to the age provided in the RegisterDto object. The age is cast to an integer since the Age property in the ApplicationUser class is defined as an integer.
+                Age = model.Age ?? 0,//the Age property of the ApplicationUser object is set to the age provided in the RegisterDto object. The age is cast to an integer since the Age property in the ApplicationUser class is defined as an integer, defaulting to 0 if the age is not provided (null).
                 EmailConfirmed = true//the EmailConfirmed property of the ApplicationUser object is set to true, indicating that the user's email is considered confirmed. This means that the user will not need to go through an email confirmation process after registration.
             };
 
