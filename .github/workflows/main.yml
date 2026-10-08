@@ -24,3 +24,6 @@ jobs:
 
       -   name: Build the Solution
           run: msbuild "RaceDay Application.slnx"
+
+      - name: Run Unit Tests
+        run: vstest.console.exe **\*Tests.dll /Platform:x64    
