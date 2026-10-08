@@ -26,4 +26,4 @@ jobs:
           run: msbuild "RaceDay Application.slnx"
 
       - name: Run Unit Tests
-        run: vstest.console.exe **\*Tests.dll /Platform:x64    
+        run: dotnet test "RaceDay Application.slnx" --no-build --verbosity normal    
