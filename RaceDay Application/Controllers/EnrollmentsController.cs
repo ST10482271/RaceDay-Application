@@ -15,7 +15,7 @@ namespace RaceDayApplication.Controllers
     {
         private readonly AppDbContext _context;// Dependency injection of the database context
 
-        // Constructor to initialize the controller with the database context, so we can access information from the database in the controller methods
+        // Constructor to initialize the controller with the database context, so we can access information from the database in the controller methods and unit tests
         public EnrollmentsController(AppDbContext context)
         {
             _context = context;// Assign the injected context to the private field so it is accessible and secure

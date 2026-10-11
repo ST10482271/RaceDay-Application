@@ -9,7 +9,7 @@ using RaceDayApplication.DTOs;
 using RaceDayApplication.Models;
 using Xunit;
 
-namespace RaceDay.Tests
+namespace RaceDayApplication.Tests
 {
     public class EventsControllerTest
     {
