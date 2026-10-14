@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;//the SymmetricSecurityKey class is used to
 using RaceDayApplication.DTOs;
 using RaceDayApplication.Models;
 
+
 namespace RaceDayApplication.Controllers
 {
     [Route("api/[controller]")]
@@ -139,5 +140,94 @@ namespace RaceDayApplication.Controllers
             //allowing the server to verify that the token has not been tampered with and was issued by a trusted source
             //by using claims to store user-specific information that can be used for authorization and access control in the application.
         }
+
+        //endpoint to view the current user's profile information, including their first name, last name, email, phone number, and age.
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            //to check if the user is authenticated and retrieve their user ID from the claims in the JWT.
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User is not authenticated.");
+            }
+
+            //to retrieve the user from the database using the UserManager service and the user ID obtained from the claims.
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            //to return an Ok response with a JSON object containing the user's profile information, including their first name, last name, email, phone number, and age.
+            return Ok(new
+            {
+                 user.FirstName,
+                 user.LastName,
+                 user.Email,
+                 user.PhoneNumber,
+                 user.Age
+            });
+        }
+
+        //endpoint to update the current user's profile information, including their first name, last name, phone number, and age.
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto model)
+        {
+            //to check if the user is authenticated and retrieve their user ID from the claims in the JWT.
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User is not authenticated.");
+            }
+
+            //to retrieve the user from the database using the UserManager service and the user ID obtained from the claims.
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            //to update the user's profile information based on the values provided in the UpdateProfileDto object.,
+            //not excepting "string" as a valid value for the fields that comes from swaagger UI, which is a default value for string fields in the Swagger UI form.
+            user.FirstName = (!string.IsNullOrEmpty (model.FirstName) && model.FirstName != "string") ? model.FirstName : user.FirstName;
+            user.LastName = (!string.IsNullOrEmpty (model.LastName) && model.LastName != "string") ? model.LastName : user.LastName;
+            user.PhoneNumber = (!string.IsNullOrEmpty (model.PhoneNumber) && model.PhoneNumber != "string") ? model.PhoneNumber : user.PhoneNumber;
+            user.Age = model.Age ?? user.Age;
+
+            //to check if the email is being updated and if the new email is already in use by another user.
+            //If the email is being changed, it updates both the Email and UserName properties of the user.
+            if (!string.IsNullOrEmpty(model.Email) && model.Email != user.Email && model.Email != "string")
+            {
+                user.Email = model.Email;
+                user.UserName = model.Email; // Update username if email changes
+            }
+
+            //to update the user's profile information in the database using the UpdateAsync method of the UserManager service.
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            //to handle password change if a new password is provided in the UpdateProfileDto object.
+            //It checks if the current password is provided and is correct and attempts to change the password using the ChangePasswordAsync method of the UserManager service.
+            if (!string.IsNullOrEmpty(model.NewPassword) && model.NewPassword != "string")
+            {
+                if (string.IsNullOrEmpty(model.CurrentPassword) || model.CurrentPassword != "string")
+                {
+                    return BadRequest("Current password is required to change the password.");
+                }
+
+                var passwordChange = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                if (!passwordChange.Succeeded)
+                {
+                    return BadRequest(passwordChange.Errors);
+                }
+            }
+
+            //the method returns an Ok response with a success message indicating that the profile has been updated successfully.
+            return Ok(new { Message = "Profile updated successfully." });
+        }   
     }
 }
