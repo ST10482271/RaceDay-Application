@@ -1,0 +1,42 @@
+﻿@model RaceDayApplication.Web.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <h2 class="text-center mb-4">Create a RaceDay Account</h2>
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FirstName" class="form-label">First Name</label>
+                    <input asp-for="FirstName" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="LastName" class="form-label">Last Name</label>
+                    <input asp-for="LastName" class="form-control" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Age" class="form-label"></label>
+                    <input asp-for="Age" type="number" class="form-control" />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Register</button>
+        </form>
+    </div>
+</div>
