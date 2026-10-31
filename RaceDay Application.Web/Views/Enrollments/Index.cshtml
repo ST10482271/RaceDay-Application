@@ -1,0 +1,65 @@
+﻿@model IEnumerable<RaceDayApplication.Web.Models.MyEnrollmentViewModel>
+@{
+    ViewData["Title"] = "My Enrolments & Results";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">📋 My Enrolments & Race Results</h2>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm border-left-primary">
+                        <div class="card-body">
+                            <h4 class="card-title text-primary">@item.EventName</h4>
+                            <h6 class="card-subtitle mb-3 text-muted">
+                                📁 @item.Category | 📍 @item.Location
+                            </h6>
+                            
+                            <p class="mb-1"><strong>Date:</strong> @item.EventDate.ToString("yyyy-MM-dd HH:mm")</p>
+                            <p class="mb-3">
+                                <strong>Status:</strong> 
+                                @if (item.Status == RaceDayApplication.Web.Models.EnrollmentStatus.Accepted)
+                                {
+                                    <span class="badge bg-success">@item.Status</span>
+                                }
+                                else if (item.Status == RaceDayApplication.Web.Models.EnrollmentStatus.Pending)
+                                {
+                                    <span class="badge bg-warning text-dark">@item.Status</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">@item.Status</span>
+                                }
+                            </p>
+
+                            <!-- Results Section -->
+                            @if (item.Result != null)
+                            {
+                                <div class="alert alert-info mt-3 mb-0">
+                                    <h6 class="fw-bold mb-1">🏁 Race Result</h6>
+                                    <p class="mb-0"><strong>Position:</strong> @item.Result.Position | <strong>Finish Time:</strong> @item.Result.FinishTime</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-muted small fst-italic mt-3">
+                                    Result pending or race has not taken place yet.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-warning">You are not currently enrolled in any race events. Head over to the Categories to sign up!</div>
+            </div>
+        }
+    </div>
+</div>
