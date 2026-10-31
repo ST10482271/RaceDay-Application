@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// 1. Configure HttpClient to communicate with your Part 2 Web API
+// 1. Configure HttpClient to communicate with Web API
 builder.Services.AddHttpClient("RaceDayApi", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7243/api/");
@@ -28,7 +28,7 @@ builder.Services.AddTransient<ApiService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Auth/login"; // Adjust to your actual login route
+        options.LoginPath = "/Auth/login"; 
         options.ExpireTimeSpan = TimeSpan.FromDays(7);
     });
 
