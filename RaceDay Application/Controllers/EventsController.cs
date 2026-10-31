@@ -22,7 +22,7 @@ namespace RaceDayApplication.Controllers
         }
 
         //this endpoint is used to retrieve all events from the database, optionally filtered by category name provided as a query parameter in the URL
-        [HttpGet("({categoryName})")]
+        [HttpGet]
         public async Task<IActionResult> GetAllEvents([FromQuery] string categoryName)
         {
             var query = _context.Events//access the Events table in the database
@@ -50,38 +50,21 @@ namespace RaceDayApplication.Controllers
 
             return Ok(events);
         }
-        //this endpoint is used to create a new event in the database, and it requires the user to be authenticated and have the "Organizer" role.
-        //The event details are provided in the request body as a JSON object that matches the EventCreateDto class.
-        [HttpPost]
-        [Authorize(Roles = "Organizer")]// This endpoint requires the user to be authenticated and have the "Organizer" role, which is checked by the Authorize attribute
-        public async Task<IActionResult> CreateEvent([FromBody] EventCreateDto dto)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);// Get the user ID of the authenticated user from the claims, which is used to associate the event with the organiser
-
-            var newEvent = new Event// Create a new Event entity and populate its properties from the DTO and the user ID
-            {//DTO will communicate between the client and the server, and it will contain the data needed to create a new event
-                Name = dto.Name,
-                EventDate = dto.EventDate,
-                Location = dto.Location,
-                CategoryId = dto.CategoryId,
-                OrganiserId = userId!// The exclamation mark is used to indicate that the userId is not null, since we expect the user to be authenticated and have a valid ID
-                //so the organiser that logged in will be the one that created the event
-            };
-
-            // Add the new event to the database context and save the changes asynchronously, which will insert a new record in the Events table
-            _context.Events.Add(newEvent);
-            await _context.SaveChangesAsync();
-
-            // Return a 201 Created response with the new event data, which indicates that the event was successfully created and provides the details of the new event
-            return StatusCode(201, newEvent);
-        }
+        
 
         //this endpoint is used to retrieve all categories from the database, and it does not require any authentication or authorization.
         [HttpGet("categories")]
         public async Task<IActionResult> GetCategory([FromQuery] Models.Category category)
         {
             //Display all categories available in the database
-            var categories = await _context.Categories.ToListAsync();// Execute the query asynchronously and return the results as a list
+            var categories = await _context.Categories
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Name,
+                    c.Description
+                })
+                .ToListAsync();// Execute the query asynchronously and return the results as a list
             return Ok(categories);// Return a 200 OK response with the list of categories
         }
 

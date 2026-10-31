@@ -33,7 +33,7 @@ var jwtAudience = builder.Configuration["Jwt:Audience"]!;
 
 // Add services to the container.
 
-// Configure JWT authentication
+// Configure JWT authentication 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
