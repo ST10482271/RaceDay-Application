@@ -61,7 +61,7 @@ namespace RaceDayApplication.Tests
             // Arrange
             // Create an in-memory database context and an instance of the EventsController for testing
             var context = GetInMemoryDbContext();
-            var controller = new EventsController(context);
+            var controller = new OrganizerController(context);
             SetUserInContext(controller, "organiser-123", "Organiser");//call the SetUserInContext method to simulate an authenticated user
            //with the role of "Organiser" and a unique user ID of "organiser-123" for testing the CreateEvent endpoint.
 
