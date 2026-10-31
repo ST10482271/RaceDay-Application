@@ -71,8 +71,6 @@ namespace RaceDayApplication.Web.Services
                 // Defines deserialization options for handling case-insensitive keys and string-to-enum mapping
                 var options = new JsonSerializerOptions
                 {
-                var options = new JsonSerializerOptions
-                {
                     PropertyNameCaseInsensitive = true, // Ignores casing differences between JSON keys and C# model properties
                     Converters = { new JsonStringEnumConverter() }
                 };
