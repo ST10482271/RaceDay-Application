@@ -1,8 +1,40 @@
-﻿@{
+﻿@using System.Security.Claims
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    /* Custom button hover transitions */
+    .btn-hover-lift {
+        transition: all 0.25s ease-in-out;
+    }
+
+        .btn-hover-lift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.15) ;
+        }
+</style>
+
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="p-5 mb-4 bg-white rounded-4 shadow-sm border border-light position-relative overflow-hidden">
+        <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient opacity-10 pointer-events-none" style="background: linear-gradient(135deg, rgba(13,110,253,0.05) 0%, rgba(255,255,255,0) 100%);"></div>
+        <div class="container-fluid py-3 position-relative">
+            <span class="badge bg-primary bg-opacity-10 text-primary mb-3 px-3 py-2 rounded-pill fw-semibold small">
+                <i class="bi bi-lightning-charge-fill me-1"></i> Your Ultimate Race Experience
+            </span>
+            <h1 class="display-5 fw-bold text-dark tracking-tight">Welcome to RaceDay</h1>
+            <p class="col-md-8 fs-4 text-secondary mt-2 mb-4 lh-base">
+                Your ultimate platform for discovering, organizing, and participating in local running and cycling events. Track your enrollments, manage races, and hit your personal bests.
+            </p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a class="btn btn-primary btn-lg px-4 shadow-sm btn-hover-lift" asp-controller="Events" asp-action="Index">Browse Events</a>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a class="btn btn-outline-secondary btn-lg px-4 btn-hover-lift" asp-controller="Account" asp-action="Register">Get Started</a>
+                }
+            </div>
+        </div>
+    </div>
 </div>
+
