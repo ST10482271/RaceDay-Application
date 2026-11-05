@@ -1,0 +1,116 @@
+﻿@model RaceDayApplication.Web.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container mt-4 mb-5" style="max-width: 800px;">
+    <h2 class="mb-4">👤 My Profile</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <form asp-action="Index" method="post" enctype="multipart/form-data" class="card shadow-sm p-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <!-- Profile Picture Section -->
+        <div class="text-center mb-4">
+            <div class="mb-3">
+                <img id="avatarPreview"
+                     src="@(string.IsNullOrEmpty(Model.ProfilePictureUrl) ? "https://ui-avatars.com/api/?name=" + Uri.EscapeDataString(Model.FirstName + " " + Model.LastName) + "&size=140&background=random" : "https://localhost:7024" + Model.ProfilePictureUrl)"
+                     alt="Profile Picture"
+                     class="rounded-circle img-thumbnail shadow-sm"
+                     style="width: 140px; height: 140px; object-fit: cover;" />
+            </div>
+            <div class="d-inline-block">
+                <label for="profilePicture" class="btn btn-sm btn-outline-secondary style-pointer">Change Picture</label>
+                <input type="file" id="profilePicture" name="profilePicture" accept="image/*" class="d-none" onchange="previewImage(event)" />
+            </div>
+            <!-- Hidden input preserves current picture URL if no new picture is selected -->
+            <input type="hidden" asp-for="ProfilePictureUrl" />
+        </div> 
+
+        <hr class="my-4" />
+
+        <!-- Personal Details -->
+        <h5 class="mb-3 text-primary">Personal Details</h5>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="FirstName" class="form-label fw-bold"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LastName" class="form-label fw-bold"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Email" class="form-label fw-bold"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-md-3">
+                <label asp-for="PhoneNumber" class="form-label fw-bold"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="col-md-3">
+                <label asp-for="Age" class="form-label fw-bold"></label>
+                <input asp-for="Age" type="number" class="form-control" min="1" max="120" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <!-- Security / Password Update (Optional) -->
+        <h5 class="mb-3 text-primary">Change Password (Optional)</h5>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="CurrentPassword" class="form-label fw-bold"></label>
+                <input asp-for="CurrentPassword" class="form-control" placeholder="Required only if changing password" />
+                <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="NewPassword" class="form-label fw-bold"></label>
+                <input asp-for="NewPassword" class="form-control" placeholder="Enter new password" />
+                <span asp-validation-for="NewPassword" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mt-4 text-end">
+            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" /> 
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('avatarPreview');
+                output.src = reader.result;
+            };
+            if (event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+    </script>
+}
+
