@@ -127,12 +127,12 @@ namespace RaceDayApplication.Web.Controllers
         // POST: /Organiser/UpdateStatus - Updates participant enrollment status (e.g. Approved, Pending, Cancelled)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateStatus(int enrollmentId, int eventId, EnrollmentStatus status)
+        public async Task<IActionResult> UpdateStatus([FromForm] int enrollmentId, [FromForm]int eventId, [FromForm] EnrollmentStatus status)
         {
             var dto = new UpdateStatus { Status = status };
 
             // Send PUT request to API to update enrollment status
-            var success = await _apiService.PutAsync<UpdateStatus>($"organizer/enrollments/{enrollmentId}/status", dto);
+            var success = await _apiService.PutAsync<UpdateStatus>($"Organizer/enrollments/{enrollmentId}/status", dto);
 
             if (success != null)
             {

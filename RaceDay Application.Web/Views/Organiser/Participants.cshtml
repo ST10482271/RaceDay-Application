@@ -37,9 +37,18 @@
                                 <td>@p.Age</td>
                                 <td><span class="badge bg-info text-dark">@p.CategoryName</span></td>
                                 <td>
-                                    <span class="badge @(p.Status == "Confirmed" ? "bg-success" : "bg-warning text-dark")">
-                                        @p.Status
-                                    </span>
+                                @if (p.Status == RaceDayApplication.Web.Models.EnrollmentStatus.Accepted)
+                                {
+                                    <span class="badge bg-success">@p.Status</span>
+                                }
+                                else if (p.Status == RaceDayApplication.Web.Models.EnrollmentStatus.Pending)
+                                {
+                                    <span class="badge bg-warning text-dark">@p.Status</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">@p.Status</span>
+                                }
                                 </td>
                                 <td>
                                     <a asp-action="PostResult" asp-route-enrollmentId="@p.EnrollmentId" asp-route-eventId="@ViewBag.EventId" class="btn btn-sm btn-outline-success">
@@ -51,11 +60,11 @@
                                         <input type="hidden" name="enrollmentId" value="@p.EnrollmentId" />
                                         <input type="hidden" name="eventId" value="@ViewBag.EventId" />
 
-                                        <select name="status" class="form-select form-select-sm d-inline-block w-auto" onchange="this.form.submit()">
-                                            <option value="" disabled selected>Change Status...</option>
-                                            <option value="Confirmed">Confirmed</option>
-                                            @* <option value="Pending">Pending</option> *@
-                                            <option value="Cancelled">Rejected</option>
+                                       <select name="status" class="form-select d-inline-block w-auto" onchange="this.form.submit()">
+                                          <option value="" disabled selected>Change Status...</option>
+                                          <option value="1">Accepted</option>
+                                          <option value="0">Pending</option>
+                                          <option value="2">Rejected</option>
                                         </select>
                                     </form>
                                 </td>

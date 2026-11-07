@@ -7,6 +7,6 @@
         public string Email { get; set; } = string.Empty;
         public int Age { get; set; }
         public string CategoryName { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Pending;
     }
 }
