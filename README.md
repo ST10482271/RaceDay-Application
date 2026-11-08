@@ -11,4 +11,27 @@ run the program normally, register then login, then authorise all endpoints with
 screen shot of successful CI/CD green build after adding Unit Test functionality:
 <img width="1920" height="1200" alt="Successful CI-CD" src="https://github.com/user-attachments/assets/96711ead-21e2-4a01-a910-4523194f4683" />
 
+YouTube link for ASP.Net Core MVC:
+https://youtu.be/axH3SEBxE60
+
+Setup and run instructions:
+run the program by pressing the green play button, 2 applications will run simultaneously, click on the MVC tab NOT the swagger one. You can register as a new participant or organiser or use the data used in the video.
+
+Participant can:
+- browse events and categories
+- enroll in an event
+- view their enrollments
+- view their results and status
+- view and update their profile info
+
+Organiser can:
+- browse events and categories
+- enroll in an event
+- view their enrollments
+- view their results and status
+- view and update their profile info
+- create, update and delete their events
+- view participants of their events
+- change status and post results of participants enrolled in their events
+
 
