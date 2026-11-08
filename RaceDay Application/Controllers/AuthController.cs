@@ -195,6 +195,9 @@ namespace RaceDayApplication.Controllers
             user.PhoneNumber = (!string.IsNullOrEmpty (model.PhoneNumber) && model.PhoneNumber != "string") ? model.PhoneNumber : user.PhoneNumber;
             user.Age = model.Age ?? user.Age;
 
+            user.ProfilePictureUrl = !string.IsNullOrEmpty(model.ProfilePictureUrl) ? model.ProfilePictureUrl : user.ProfilePictureUrl;
+
+
             //to check if the email is being updated and if the new email is already in use by another user.
             //If the email is being changed, it updates both the Email and UserName properties of the user.
             if (!string.IsNullOrEmpty(model.Email) && model.Email != user.Email && model.Email != "string")
@@ -202,6 +205,8 @@ namespace RaceDayApplication.Controllers
                 user.Email = model.Email;
                 user.UserName = model.Email; // Update username if email changes
             }
+
+           
 
             //to update the user's profile information in the database using the UpdateAsync method of the UserManager service.
             var result = await _userManager.UpdateAsync(user);

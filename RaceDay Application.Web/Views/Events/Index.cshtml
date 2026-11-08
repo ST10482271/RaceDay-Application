@@ -1,0 +1,71 @@
+﻿@model IEnumerable<RaceDayApplication.Web.Models.EventViewModel>
+@{
+    ViewData["Title"] = "Event Catalog";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">🏁 Upcoming Race Events</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <!-- Category Search/Filter Form -->
+    <form asp-action="Index" method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="categoryName" class="form-control" placeholder="Filter by category (e.g., Running)..." value="@ViewData["CurrentCategory"]" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-outline-primary w-100">Filter</button>
+        </div>
+        @if (!string.IsNullOrEmpty(ViewData["CurrentCategory"]?.ToString()))
+        {
+            <div class="col-md-2">
+                <a asp-action="Index" class="btn btn-secondary w-100">Clear</a>
+            </div>
+        }
+    </form>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">@item.Name</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                📁 @item.CategoryName | 📍 @item.Location
+                            </h6>
+                            <p class="card-text"><strong>Date:</strong> @item.EventDate.ToString("yyyy-MM-dd HH:mm")</p>
+
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <form asp-controller="Events" asp-action="Enrol" asp-route-eventName="@item.Name" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-primary w-100">Enrol in Race</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a class="btn btn-secondary w-100" asp-controller="Account" asp-action="Login">Log in to Enrol</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info">No upcoming race events found. Try adjusting your filter or check back soon!</div>
+            </div>
+        }
+    </div>
+</div>
+
